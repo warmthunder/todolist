@@ -52,22 +52,18 @@ class tdlist:
         head.pack()
 
         for a in self.tasks:
-            btn = tk.Checkbutton(deletewindow, textvariable = a[1], font=('Arial',16),variable = a[0], command = lambda a=a: self.delete.append(a))
+            btn = tk.Checkbutton(deletewindow, textvariable = a[1], font=('Arial',16), command = lambda a=a: self.tasks.remove(a))
             btn.pack()
-            print(a)
+          
         
        
 
-        confirmbtn = tk.Button(deletewindow, text='confirm', command=lambda:(self.refreshdata(),self.refresh(), deletewindow.destroy()) )
+        confirmbtn = tk.Button(deletewindow, text='confirm', command=lambda:(self.refresh(), deletewindow.destroy()) )
         confirmbtn.pack()
 
         
-        
-    def refreshdata(self):
-         for t1 in self.tasks:
-            if t1 in self.delete:
-                self.tasks.remove(t1)
-
+    
+   
 
     def strikethrough(self, input):
         result = ''
