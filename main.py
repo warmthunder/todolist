@@ -26,9 +26,10 @@ class tdlist:
 
         self.deletebtn = tk.Button(self.frame, 
         text="delete task", font=('Arial',8),
-        command = lambda: self.removetasks(self.tasks.pop(0)))
+        command = self.selectdelete)
         self.deletebtn.pack(anchor='w')
        
+        self.delete = []
 
 
         tk.mainloop()
@@ -42,6 +43,31 @@ class tdlist:
         else:
             textb1.set(text)
       
+    def selectdelete(self):
+
+        deletewindow = tk.Toplevel()
+        deletewindow.geometry('500x300')
+
+        head = tk.Label(deletewindow, text="Select which task to delete",font=('Arial',25,'bold'))
+        head.pack()
+
+        for a in self.tasks:
+            btn = tk.Checkbutton(deletewindow, textvariable = a[1], font=('Arial',16),variable = a[0], command = lambda a=a: self.delete.append(a))
+            btn.pack()
+            print(a)
+        
+       
+
+        confirmbtn = tk.Button(deletewindow, text='confirm', command=lambda:(self.refreshdata(),self.refresh(), deletewindow.destroy()) )
+        confirmbtn.pack()
+
+        
+        
+    def refreshdata(self):
+         for t1 in self.tasks:
+            if t1 in self.delete:
+                self.tasks.remove(t1)
+
 
     def strikethrough(self, input):
         result = ''
@@ -49,8 +75,7 @@ class tdlist:
             result = result + i + '\u0336'
         return result
 
-    def removetasks(self,task):
-        task.destroy()
+   
 
     def newtaskwindow(self):
         addwindow = tk.Toplevel()
@@ -68,21 +93,27 @@ class tdlist:
         )
         nextbtn.pack()
 
-
+       
     def addtask(self, text):
         
 
         newst = tk.IntVar()
         text2 = tk.StringVar(value=text)
 
+        self.tasks.append((newst,text2,text))
+        self.refresh()
 
-        nwbtn = tk.Checkbutton(self.frame,textvariable=text2, 
-         font=('Arial',16), 
-         variable = newst,
-         command = lambda:( self.donetask(newst,text2, text)) )
-        nwbtn.pack(anchor='w')
+    def refresh(self):
+        for widget in self.frame.winfo_children():
+            if isinstance(widget, tk.Checkbutton):
+                widget.destroy()
 
-        self.tasks.append(nwbtn)
+        for state, texts, text in self.tasks:
+            nwbtn = tk.Checkbutton(self.frame,textvariable=texts, 
+            font=('Arial',16), 
+            variable = state,
+            command = lambda:( self.donetask(state,texts, text)) )
+            nwbtn.pack(anchor='w')
        
     
 
