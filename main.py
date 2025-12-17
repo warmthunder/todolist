@@ -25,9 +25,9 @@ class tdlist:
         self.tasks = []
 
         self.deletebtn = tk.Button(self.frame, 
-        text="delete task", 
-        command = lambda: (self.removetasks(self.tasks[0]),self.tasks.pop(0)))
-        self.deletebtn.pack()
+        text="delete task", font=('Arial',8),
+        command = lambda: self.removetasks(self.tasks.pop(0)))
+        self.deletebtn.pack(anchor='w')
        
 
 
@@ -72,16 +72,18 @@ class tdlist:
     def addtask(self, text):
         
 
-        self.newst = tk.IntVar()
-        self.text2 = tk.StringVar(value=text)
+        newst = tk.IntVar()
+        text2 = tk.StringVar(value=text)
 
 
-        nwbtn = tk.Checkbutton(self.frame,textvariable=self.text2, 
-         font=('Arial',16), variable = self.newst,command = lambda:( self.donetask(self.newst,self.text2, text)) )
+        nwbtn = tk.Checkbutton(self.frame,textvariable=text2, 
+         font=('Arial',16), 
+         variable = newst,
+         command = lambda:( self.donetask(newst,text2, text)) )
         nwbtn.pack(anchor='w')
 
         self.tasks.append(nwbtn)
-        print(self.tasks)
+       
     
 
 
