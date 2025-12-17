@@ -21,15 +21,10 @@ class tdlist:
 
         addbtn = tk.Button(self.frame,text="Add New",  
         font=('Arial',8), anchor='w', justify='left',
-         command = self.addtask)
+         command = self.newtaskwindow)
         addbtn.pack(anchor='w' )
         
-        chkbox = tk.Checkbutton(self.frame, 
-        textvariable=self.textb1, font=('Arial',16), 
-        anchor='w', justify='left', variable=self.state, 
-        command=lambda: self.donetask(self.state,self.textb1))
-        chkbox.pack(fill='x')
-
+        
 
         self.root.geometry("500x500")
         self.root.title("To-Do LIST")
@@ -39,16 +34,17 @@ class tdlist:
 
         tk.mainloop()
     
-    def donetask(self, state, textb1):
+    def donetask(self, state, textb1, text):
         st = state.get()
         txt = textb1.get()
+        
 
 
         
         if st == 1:
             textb1.set(self.strikethrough(txt))
         else:
-            textb1.set("task 1")
+            textb1.set(text)
       
 
     def strikethrough(self, input):
@@ -57,16 +53,34 @@ class tdlist:
             result = result + i + '\u0336'
         return result
 
+    
+
+    def newtaskwindow(self):
+        addwindow = tk.Toplevel()
+        addwindow.geometry('300x200')
+        
+        textt = tk.Label(addwindow, text="enter name of task", font=('Arial', 16, 'bold'))
+        textt.pack()
+
+        entry = tk.Entry(addwindow)
+        entry.pack(fill='x')
+
+       
+
+        nextbtn = tk.Button(addwindow, text='add task', font=('Arial', 16), command=lambda: (self.addtask( entry.get()), addwindow.destroy())
+        )
+        nextbtn.pack()
+
+
+    def addtask(self, text):
         
 
-
-    def addtask(self):
         self.newst = tk.IntVar()
-        self.text2 = tk.StringVar(value="task 2")
+        self.text2 = tk.StringVar(value=text)
 
 
         nwbtn = tk.Checkbutton(self.frame,textvariable=self.text2, 
-         font=('Arial',16), variable = self.newst, command = lambda: self.donetask(self.newst,self.text2))
+         font=('Arial',16), variable = self.newst,command = lambda:( self.donetask(self.newst,self.text2, text)) )
         nwbtn.pack(anchor='w')
 
         
