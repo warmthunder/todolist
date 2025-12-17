@@ -10,12 +10,6 @@ class tdlist:
         heading = tk.Label(self.root, text="TO-DO LIST",font=('Arial',30,'bold'))
         heading.pack()
 
-
-    
-
-        self.textb1 = tk.StringVar(value="task 1")
-        self.state = tk.IntVar()
-
         self.frame = tk.Frame(self.root)
         self.frame.pack(fill = 'x', anchor = 'w')
 
@@ -24,12 +18,17 @@ class tdlist:
          command = self.newtaskwindow)
         addbtn.pack(anchor='w' )
         
-        
-
+    
         self.root.geometry("500x500")
         self.root.title("To-Do LIST")
 
-        
+        self.tasks = []
+
+        self.deletebtn = tk.Button(self.frame, 
+        text="delete task", 
+        command = lambda: (self.removetasks(self.tasks[0]),self.tasks.pop(0)))
+        self.deletebtn.pack()
+       
 
 
         tk.mainloop()
@@ -37,9 +36,6 @@ class tdlist:
     def donetask(self, state, textb1, text):
         st = state.get()
         txt = textb1.get()
-        
-
-
         
         if st == 1:
             textb1.set(self.strikethrough(txt))
@@ -53,7 +49,8 @@ class tdlist:
             result = result + i + '\u0336'
         return result
 
-    
+    def removetasks(self,task):
+        task.destroy()
 
     def newtaskwindow(self):
         addwindow = tk.Toplevel()
@@ -83,9 +80,10 @@ class tdlist:
          font=('Arial',16), variable = self.newst,command = lambda:( self.donetask(self.newst,self.text2, text)) )
         nwbtn.pack(anchor='w')
 
-        
+        self.tasks.append(nwbtn)
+        print(self.tasks)
     
 
-       
 
+    
 tdlist()
