@@ -36,7 +36,18 @@ class tdlist:
         tk.mainloop()
     
 
- 
+    def quickdel(self, chkbtn):
+        parentframe = chkbtn.master
+        text = chkbtn.cget("text")
+        
+        for a in self.tasks:
+            if a[2] == text:
+                self.tasks.remove(a)
+                
+        for a in parentframe.winfo_children():
+           
+            a.destroy()
+
 
     def donetask(self, state, textb1, text):
         st = state.get()
@@ -99,18 +110,20 @@ class tdlist:
 
     def refresh(self):
         for widget in self.frame.winfo_children():
-            if isinstance(widget, tk.Checkbutton):
+            if isinstance(widget, tk.Frame):
                 widget.destroy()
 
         for state, texts, text in self.tasks:
-            nwbtn = tk.Checkbutton(self.frame,textvariable=texts, 
+            taskframe = tk.Frame(self.frame)
+            taskframe.pack(fill='x')
+            nwbtn = tk.Checkbutton(taskframe,textvariable=texts, 
             font=('Arial',16), 
             variable = state,
             command = lambda s=state, t=texts, tx=text: self.donetask(s, t, tx)) 
-            nwbtn.pack(anchor='e')
-            delbtn = tk.Button(self.frame, image = self.delphoto)
-            delbtn.pack(anchor='e')
-       
+            nwbtn.pack(anchor='e', side=tk.LEFT)
+            delbtn = tk.Button(taskframe, image = self.delphoto, command = lambda nb = nwbtn:self.quickdel(nb))
+            delbtn.pack(anchor='e', side=tk.LEFT)
+        
     
 
 
