@@ -10,7 +10,7 @@ class tdlist:
         heading = tk.Label(self.root, text="TO-DO LIST",font=('Arial',30,'bold'))
         heading.pack()
 
-        self.frame = tk.Frame(self.root)
+        self.frame = tk.Frame(self.root, bg= 'pink')
         self.frame.pack(fill = 'x', anchor = 'w')
 
         addbtn = tk.Button(self.frame,text="Add New",  
@@ -30,19 +30,24 @@ class tdlist:
         self.deletebtn.pack(anchor='w')
        
         self.delete = []
-
+        self.delphoto = tk.PhotoImage(file='delete.png')
+        self.delphoto = self.delphoto.subsample(32,32)
 
         tk.mainloop()
     
+
+ 
+
     def donetask(self, state, textb1, text):
         st = state.get()
         txt = textb1.get()
         
         if st == 1:
             textb1.set(self.strikethrough(txt))
+            
         else:
             textb1.set(text)
-      
+       
     def selectdelete(self):
 
         deletewindow = tk.Toplevel()
@@ -61,17 +66,11 @@ class tdlist:
         confirmbtn = tk.Button(deletewindow, text='confirm', command=lambda:(self.refresh(), deletewindow.destroy()) )
         confirmbtn.pack()
 
-        
-    
-   
-
     def strikethrough(self, input):
         result = ''
         for i in input:
             result = result + i + '\u0336'
         return result
-
-   
 
     def newtaskwindow(self):
         addwindow = tk.Toplevel()
@@ -88,8 +87,7 @@ class tdlist:
         nextbtn = tk.Button(addwindow, text='add task', font=('Arial', 16), command=lambda: (self.addtask( entry.get()), addwindow.destroy())
         )
         nextbtn.pack()
-
-       
+     
     def addtask(self, text):
         
 
@@ -108,8 +106,10 @@ class tdlist:
             nwbtn = tk.Checkbutton(self.frame,textvariable=texts, 
             font=('Arial',16), 
             variable = state,
-            command = lambda:( self.donetask(state,texts, text)) )
-            nwbtn.pack(anchor='w')
+            command = lambda s=state, t=texts, tx=text: self.donetask(s, t, tx)) 
+            nwbtn.pack(anchor='e')
+            delbtn = tk.Button(self.frame, image = self.delphoto)
+            delbtn.pack(anchor='e')
        
     
 
